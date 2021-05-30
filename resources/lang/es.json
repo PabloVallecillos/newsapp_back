@@ -1,0 +1,5 @@
+{
+    "failed_username_password": "El nombre de usuario y la contraseña no coinciden con nuestros registros",
+    "unauthenticated": "No autentificado",
+    "The_given_data_was_invalid.": "Los datos proporcionados no son válidos."
+}
