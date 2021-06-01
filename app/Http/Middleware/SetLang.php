@@ -17,7 +17,8 @@ class SetLang
      */
     public function handle(Request $request, Closure $next)
     {
-        App::setLocale($request->lang);
+        App::setLocale($request->route('lang'));
+        $request->route()->forgetParameter('lang');
         return $next($request);
     }
 }

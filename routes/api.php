@@ -19,9 +19,12 @@ use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 Route::group(['prefix' => '{lang}'], function () {
 
     Route::group(['middleware' => 'throttle:2,1'], function () {
-//        Route::post('user/login', [UserController::class, 'login'])->name('api.user.login');
+
     });
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('user/logged', [UserController::class, 'getUserLogged'])->name('api.user.logged');
+        Route::post('user/profile/edit/{user}', [UserController::class, 'update'])->name('api.user.profile.edit');
+//        Route::apiResource('user', UserController::class);
     });
 });
+
