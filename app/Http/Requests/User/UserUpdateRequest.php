@@ -14,7 +14,6 @@ class UserUpdateRequest extends FormRequest
             'username' => 'max:20',
             'name' => 'max:20',
             'lastname' => 'max:20',
-//            'avatar' => 'nullable|sometimes|image|mimes:jpeg,jpg,png'
         ];
     }
 }

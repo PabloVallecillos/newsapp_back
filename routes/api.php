@@ -37,19 +37,30 @@ Route::group(['prefix' => '{lang}'], function () {
     $twoFactorLimiter = config('fortify.limiters.two-factor');
 //    Route::group(['middleware' => 'throttle:2,1'], function () {});
 
-    Route::post('/two-factor-challenge', [TwoFactorAuthenticatedSessionController::class, 'store'])
-        ->middleware(array_filter([
-            'guest:'.config('fortify.guard'),
-            $twoFactorLimiter ? 'throttle:'.$twoFactorLimiter : null,
-        ]));
+//    Route::post('/login', [AuthenticatedSessionController::class, 'store'])
+//        ->middleware(array_filter([
+//            $limiter ? 'throttle:'.$limiter : null,
+//        ]));
+//
+//    Route::post('/two-factor-challenge', [TwoFactorAuthenticatedSessionController::class, 'store'])
+//        ->middleware(array_filter([
+//            $twoFactorLimiter ? 'throttle:'.$twoFactorLimiter : null,
+//        ]));
+//
+//    if (Features::enabled(Features::registration())) {
+//        Route::post('/register', [RegisteredUserController::class, 'store']);
+//    }
+
+    Route::post('user/check/field', [UserController::class, 'checkFieldExists'])->name('api.user.check.field');
+
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('user/logged', [UserController::class, 'getUserLogged'])->name('api.user.logged');
         Route::post('user/profile/edit/{user}', [UserController::class, 'update'])->name('api.user.profile.edit');
 //        Route::apiResource('user', UserController::class);
 
-        $enableViews = config('fortify.views', true);
-        $limiter = config('fortify.limiters.login');
-        $twoFactorLimiter = config('fortify.limiters.two-factor');
+//        $enableViews = config('fortify.views', true);
+//        $limiter = config('fortify.limiters.login');
+//        $twoFactorLimiter = config('fortify.limiters.two-factor');
 //        // Password Reset...
 //        if (Features::enabled(Features::resetPasswords())) {
 //            if ($enableViews) {
@@ -120,35 +131,6 @@ Route::group(['prefix' => '{lang}'], function () {
 //                ->name('password.confirm');
 //        }
 //
-        Route::post('/user/confirm-password', [ConfirmablePasswordController::class, 'store']);
-        Route::get('/user/confirmed-password-status', [ConfirmedPasswordStatusController::class, 'show'])->name('password.confirmation');
-
-        // Two Factor Authentication...
-        if (Features::enabled(Features::twoFactorAuthentication())) {
-
-            $twoFactorMiddleware = Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword')
-                ? ['password.confirm']
-                : [];
-
-            Route::post('/user/two-factor-authentication', [TwoFactorAuthenticationController::class, 'store'])
-                ->middleware($twoFactorMiddleware)
-                ->name('two-factor.enable');
-
-            Route::delete('/user/two-factor-authentication', [TwoFactorAuthenticationController::class, 'destroy'])
-                ->middleware($twoFactorMiddleware)
-                ->name('two-factor.disable');
-
-            Route::get('/user/two-factor-qr-code', [TwoFactorQrCodeController::class, 'show'])
-                ->middleware($twoFactorMiddleware)
-                ->name('two-factor.qr-code');
-
-            Route::get('/user/two-factor-recovery-codes', [RecoveryCodeController::class, 'index'])
-                ->middleware($twoFactorMiddleware)
-                ->name('two-factor.recovery-codes');
-
-            Route::post('/user/two-factor-recovery-codes', [RecoveryCodeController::class, 'store'])
-                ->middleware($twoFactorMiddleware);
-        }
     });
 });
 

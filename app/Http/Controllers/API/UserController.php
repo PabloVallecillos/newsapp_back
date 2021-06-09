@@ -31,4 +31,8 @@ class UserController extends ApiController
         $user->update($dataToUpdate);
         return response()->json(['data' => $user]);
     }
+
+    public function checkFieldExists(Request $request) {
+        return response()->json(['data' => User::where($request->all())->exists()]);
+    }
 }

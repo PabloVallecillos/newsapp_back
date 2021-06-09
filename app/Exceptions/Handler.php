@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Arr;
 use Illuminate\Validation\ValidationException;
 use Throwable;
 
@@ -54,4 +55,25 @@ class Handler extends ExceptionHandler
             'errors' => $exception->errors(),
         ], $exception->status, [], JSON_UNESCAPED_UNICODE);
     }
+//
+//    /**
+//     * Convert the given exception to an array.
+//     *
+//     * @param  \Throwable  $e
+//     * @return array
+//     */
+//    protected function convertExceptionToArray(Throwable $e)
+//    {
+//        return config('app.debug') ? [
+//            'message' => __(str_replace(' ', '_', $e->getMessage())),
+//            'exception' => get_class($e),
+//            'file' => $e->getFile(),
+//            'line' => $e->getLine(),
+//            'trace' => collect($e->getTrace())->map(function ($trace) {
+//                return Arr::except($trace, ['args']);
+//            })->all(),
+//        ] : [
+//            'message' => $this->isHttpException($e) ? $e->getMessage() : 'Server Error',
+//        ];
+//    }
 }

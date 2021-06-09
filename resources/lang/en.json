@@ -1,5 +1,6 @@
 {
     "failed_username_password": "Username and password do not match our records",
     "unauthenticated": "Unauthenticated",
-    "The_given_data_was_invalid.": "The given data was invalid."
+    "The_given_data_was_invalid.": "The given data was invalid.",
+    "register_new_user": "Bienvenido"
 }
