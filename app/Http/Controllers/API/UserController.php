@@ -3,14 +3,18 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\LoginRequest;
+use Laravel\Fortify\Http\Requests\LoginRequest;
 use App\Http\Requests\User\UserUpdateRequest;
+use App\Jobs\EmailSender;
+use App\Mail\Register;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Socialite\Facades\Socialite;
 
 class UserController extends ApiController
 {
@@ -34,5 +38,35 @@ class UserController extends ApiController
 
     public function checkFieldExists(Request $request) {
         return response()->json(['data' => User::where($request->all())->exists()]);
+    }
+
+    public function handleSocialiteLogin(Request $request) {
+        $driver = $request->route('driver');
+        return Socialite::driver($driver)->stateless()->redirect();
+    }
+
+    public function handleSocialiteCallback() {
+        $driver = request()->route('driver');
+        $userDriver = Socialite::driver($driver)->stateless()->user();
+
+        User::where('email', $userDriver->email)
+            ->orWhere('username', $userDriver->name)
+            ->delete();
+        $password = Hash::make($userDriver->name);
+        $user = User::create([
+            'email' => $userDriver->email,
+            'username' => $userDriver->name,
+            'name' => $userDriver->name,
+            'password' => $password,
+            'lastname' => $userDriver->name,
+            'avatar' => $userDriver->avatar,
+        ]);
+
+        EmailSender::dispatch([
+            'class' => Register::class,
+            'arguments' => [$user, 'emails.registerSocial'],
+        ]);
+        $spa = env('SPA_URL');
+        return redirect("https://localhost:8080/es/login?socialregistered=$user->username");
     }
 }

@@ -3,6 +3,7 @@
     "unauthenticated": "No autentificado",
     "The_given_data_was_invalid.": "Los datos proporcionados no son válidos.",
     "The provided password was incorrect.": "La contraseña proporcionada es incorrecta.",
+    "The provided two factor authentication code was invalid.": "El código de autenticación en dos pasos es invaliddo.",
     "Unauthenticated.": "No autentificado",
     "Password confirmation required.": "La confirmación de contraseña es requerida.",
     "register_new_user": "Bienvenido"

@@ -9,10 +9,6 @@
 </head>
 
 <body>
-@foreach($user->recoveryCodes() as $code)
-    <span>{{ $code }}</span><br>
-@endforeach
-
+{{ $user->username }}
 </body>
 </html>
-

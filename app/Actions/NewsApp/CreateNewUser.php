@@ -51,7 +51,7 @@ class CreateNewUser implements CreatesNewUsers
 
         EmailSender::dispatch([
             'class' => Register::class,
-            'arguments' => [$user],
+            'arguments' => [$user, 'emails.register'],
         ]);
 
         return $user;

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Jobs\EmailSender;
+use App\Mail\Register;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;

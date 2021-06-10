@@ -49,4 +49,5 @@ return [
     ],
 
     'prefix' => 'api/{lang}/sanctum',
+    'guard' => 'web'
 ];
